@@ -21,7 +21,8 @@ namespace LinkDev.IKEA.PL
             (optionsBuilder)=>
             {
                 optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
+            }/*,contextLifetime:ServiceLifetime.Scoped,optionsLifetime:ServiceLifetime.Scoped*/
+            );
 
             ///builder.Services.AddScoped<ApplicationDbContext>();
             ///builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>((ServiceProvider) =>
