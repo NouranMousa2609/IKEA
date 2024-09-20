@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Persistance.Data
 {
-    internal class ApplicationDbContext:DbContext
+    public class ApplicationDbContext:DbContext
     {
-        public ApplicationDbContext():base()
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) :base(options)
         {
             
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-         => optionsBuilder.UseSqlServer("Server = DESKTOP-5P13SE6\\SQLEXPRESS; Database = IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        // => optionsBuilder.UseSqlServer("Server = DESKTOP-5P13SE6\\SQLEXPRESS; Database = IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
