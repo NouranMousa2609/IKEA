@@ -15,9 +15,8 @@ namespace LinkDev.IKEA.BLL.DTOs.Departments
 
         public string Name { get; set; } = null!;
 
-        public string? Description { get; set; } 
         public string Code { get; set; } = null!;
-        [Display(Name ="Date od Creation")]
+        [Display(Name ="Date of Creation")]
         public DateTime CreationDate { get; set; }
 
     }

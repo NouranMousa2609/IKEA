@@ -27,10 +27,10 @@ namespace LinkDev.IKEA.BLL.Services.Departments
                 Id = department.Id,
                 Name = department.Name,
                 Code = department.Code,
-                Description = department.Description,
                 CreationDate = department.CreationDate,
             }
-            ).AsNoTracking().ToList();
+            ).AsNoTracking();
+            departments.ToList();
             return departments;
         }
 
@@ -86,7 +86,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
         
        
-        public int UpdateDepartment(DepartmentDto departmentDto)
+        public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
         {
 
             var department = new Department()

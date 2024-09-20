@@ -16,7 +16,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
         int CreateDepartment(CreatedDepartmentDto departmentDto);
 
-        int UpdateDepartment(DepartmentDto departmentDto);
+        int UpdateDepartment(UpdatedDepartmentDto departmentDto);
 
         bool DeleteDepartment(int id);
     }

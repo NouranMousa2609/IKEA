@@ -13,9 +13,12 @@ namespace LinkDev.IKEA.PL.Controllers
             _departmentService = departmentService;
            
         }
+        [HttpGet] //Get:/Departments/Index
         public IActionResult Index()
         {
-            return View();
+            var departments = _departmentService.GetAllDeparments();
+            return View(departments);
+            
         }
     }
 }
