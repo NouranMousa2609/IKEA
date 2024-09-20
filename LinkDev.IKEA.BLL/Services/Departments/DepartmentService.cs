@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
-    internal class DepartmentService:IDepartmentService
+    public class DepartmentService:IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
 
