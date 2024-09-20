@@ -1,4 +1,4 @@
-﻿using LinkDev.IKEA.DAL.Models.Departments;
+﻿using LinkDev.IKEA.DAL.Entities.Departments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,10 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories.Departments
     public interface IDepartmentRepository
     {
 
-        IEnumerable<Department> GetAll(bool withAsNoTracking = true);
-        Department? GetById(int id);
+        IEnumerable<Department> Get(bool withAsNoTracking = true);
+
+        IQueryable<Department> GetAllASIQueryable();
+        Department? Get(int id);
 
         int Add(Department entity);
 
