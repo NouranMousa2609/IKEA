@@ -29,8 +29,8 @@ namespace LinkDev.IKEA.BLL.Services.Departments
                 Code = department.Code,
                 CreationDate = department.CreationDate,
             }
-            ).AsNoTracking();
-            departments.ToList();
+            ).AsNoTracking().ToList();
+            
             return departments;
         }
 
