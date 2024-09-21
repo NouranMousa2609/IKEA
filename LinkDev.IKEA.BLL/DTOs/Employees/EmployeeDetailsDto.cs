@@ -27,9 +27,9 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         [DataType(DataType.EmailAddress)]
         public string? Email { get; set; }
 
-        public string Gender { get; set; } = null!;
+        public Gender Gender { get; set; } 
 
-        public string EmployeeType { get; set; } = null!;
+        public EmpType EmployeeType { get; set; } 
         [Display(Name = "Phone Number")]
         [Phone]
 
