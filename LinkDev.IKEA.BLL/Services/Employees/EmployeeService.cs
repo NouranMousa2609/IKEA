@@ -55,7 +55,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            return _employeeRepository.GetAllASIQueryable().Select(employee=> new EmployeeDto()
+            return _employeeRepository.GetAllASIQueryable().Where(X=>!X.IsDeleted).Select(employee=> new EmployeeDto()
             {
                 Id = employee.Id,
                 Name = employee.Name,
