@@ -1,3 +1,7 @@
+using LinkDev.IKEA.DAL.Persistance.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+
 namespace LinkDev.IKEA.PL
 {
     public class Program
@@ -6,10 +10,36 @@ namespace LinkDev.IKEA.PL
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            #region Configure Service
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddDbContext<ApplicationDbContext>(
+            //contextLifetime:ServiceLifetime.Scoped,
+            //optionsLifetime:ServiceLifetime.Scoped,
+            (optionsBuilder)=>
+            {
+                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            ///builder.Services.AddScoped<ApplicationDbContext>();
+            ///builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>((ServiceProvider) =>
+            ///{
+            ///    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            ///
+            ///    optionsBuilder.UseSqlServer("");
+            ///
+            ///    var option=optionsBuilder.Options;
+            ///
+            ///    return option;
+            ///});
+            
+            #endregion
+
             var app = builder.Build();
+
+            #region Configure Kestrel Middlewares
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -24,11 +54,12 @@ namespace LinkDev.IKEA.PL
 
             app.UseRouting();
 
-            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            #endregion
 
             app.Run();
         }
