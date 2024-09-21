@@ -24,9 +24,9 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
         public IEnumerable<T> GetAll(bool withAsNoTracking = true)
         {
             if (withAsNoTracking)
-                return _dbContext.Set<T>().AsNoTracking().ToList();
+                return _dbContext.Set<T>().Where(X=>!X.IsDeleted).AsNoTracking().ToList();
 
-            return _dbContext.Set<T>().ToList();
+            return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList();
         }
         public T? Get(int id)
         {
@@ -56,7 +56,8 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
         }
         public int Delete(T entity)
         {
-            _dbContext.Set<T>().Remove(entity);
+            entity.IsDeleted = true;
+            _dbContext.Set<T>().Update(entity);
 
             return _dbContext.SaveChanges();
         }
@@ -66,9 +67,6 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
             return _dbContext.Set<T>();
         }
 
-        public IEnumerable<T> Get(bool withAsNoTracking = true)
-        {
-            return _dbContext.Set<T>();
-        }
+        
     }
 }
