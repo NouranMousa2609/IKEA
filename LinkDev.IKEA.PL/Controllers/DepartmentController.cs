@@ -8,6 +8,7 @@ namespace LinkDev.IKEA.PL.Controllers
 {
     public class DepartmentController : Controller
     {
+        #region SERVICES
         private readonly IDepartmentService _departmentService;
         private readonly ILogger<Department> _logger;
         private readonly IWebHostEnvironment _environment;
@@ -18,6 +19,9 @@ namespace LinkDev.IKEA.PL.Controllers
             _logger = logger;
             _environment = environment;
         }
+        #endregion
+
+        #region Index
         [HttpGet] //Get:/Departments/Index
         public IActionResult Index()
         {
@@ -25,6 +29,9 @@ namespace LinkDev.IKEA.PL.Controllers
             return View(departments);
 
         }
+        #endregion
+
+        #region Create
 
         [HttpGet]
         public IActionResult Create()
@@ -66,6 +73,10 @@ namespace LinkDev.IKEA.PL.Controllers
             ModelState.AddModelError(string.Empty, message);
             return View(department);
         }
+        #endregion
+
+        #region Details
+
         [HttpGet]
         public IActionResult Details(int? id)
         {
@@ -100,7 +111,7 @@ namespace LinkDev.IKEA.PL.Controllers
             }
             return View(new DepartmentEditViewModel()
             {
-                
+
                 Code = department.Code,
                 Name = department.Name,
                 Description = department.Description,
@@ -108,15 +119,18 @@ namespace LinkDev.IKEA.PL.Controllers
 
             });
         }
+        #endregion
+
+        #region Edit
 
         [HttpPost]
-        public IActionResult Edit([FromRoute]int id,DepartmentEditViewModel departmentVM)
+        public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel departmentVM)
         {
             if (!ModelState.IsValid)
             {
                 return View(departmentVM);
             }
-            var message =string.Empty;
+            var message = string.Empty;
             try
             {
                 var departmentToUpdate = new UpdatedDepartmentDto()
@@ -134,18 +148,64 @@ namespace LinkDev.IKEA.PL.Controllers
 
                 message = "an error has occured during updating the department";
 
-    }
+            }
             catch (Exception ex)
             {
                 //1.log Exception
                 _logger.LogError(ex, ex.Message);
 
                 //2.set Message
-                message=_environment.IsDevelopment()? ex.Message : "an error has occured during updating the department";
-               
+                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during updating the department";
+
             }
             ModelState.AddModelError(string.Empty, message);
             return View(departmentVM);
         }
+        #endregion
+
+        #region Delete
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null)
+            {
+                return BadRequest();
+            }
+            var department = _departmentService.GetDepartmentById(id.Value);
+            if (department is null)
+                return NotFound();
+
+            return View(department);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var message = string.Empty;
+            try
+            {
+
+                var Deleted = _departmentService.DeleteDepartment(id);
+                if (Deleted)
+                    return RedirectToAction("Index");
+
+                message = " an error has occured during Deleting the department ";
+
+            }
+            catch (Exception ex)
+            {
+                //1.log Exception
+                _logger.LogError(ex, ex.Message);
+
+                //2.set Message
+                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during updating the department";
+
+            }
+            ModelState.AddModelError(string.Empty, message);
+            return RedirectToAction(nameof(Index));
+        }  
+        #endregion
+       
     }
 }
