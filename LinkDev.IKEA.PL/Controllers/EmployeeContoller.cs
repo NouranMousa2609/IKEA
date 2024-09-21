@@ -5,6 +5,7 @@ using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.PL.ViewModels.Departments;
+using LinkDev.IKEA.PL.ViewModels.Employees;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
@@ -99,75 +100,75 @@ namespace LinkDev.IKEA.PL.Controllers
         }
         #endregion
 
-        //#region Edit
-        //[HttpGet]
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id is null)
-        //    {
+        #region Edit
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id is null)
+            {
 
-        //        return BadRequest();
-        //    }
-        //    var employee = _employeeService.GetEmployeeById(id.Value);
+                return BadRequest();
+            }
+            var employee = _employeeService.GetEmployeeById(id.Value);
 
-        //    if (employee is null)
-        //    {
-        //        return NotFound();
+            if (employee is null)
+            {
+                return NotFound();
 
-        //    }
-        //    return View(new EmployeeEditViewModel()
-        //    {
+            }
+            return View(new UpdatedEmployeeDto()
+            {
+                Name=employee.Name,
+                Address=employee.Address,
+                Age=employee.Age,
+                Email=employee.Email,
+                HiringDate=employee.HiringDate,
+                IsActive=employee.IsActive,
+                PhoneNumber=employee.PhoneNumber,
+                Salary=employee.Salary,
+                EmployeeType=employee.EmployeeType,
+                Gender=employee.Gender,
 
-        //        Code = department.Code,
-        //        Name = department.Name,
-        //        Description = department.Description,
-        //        CreationDate = department.CreationDate,
+               
 
-        //    });
-        //}
+            });
+        }
 
 
 
 
-        //[HttpPost]
-        //public IActionResult Edit([FromRoute] int id, EmployeeEditViewModel EmployeeEditViewModel)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(EmployeeEditViewModel);
-        //    }
-        //    var message = string.Empty;
-        //    try
-        //    {
-        //        var departmentToUpdate = new UpdatedEmployeeDto()
-        //        {
-        //            Id = id,
-        //            Code = departmentVM.Code,
-        //            Name = departmentVM.Name,
-        //            Description = departmentVM.Description,
-        //            CreationDate = departmentVM.CreationDate,
-        //        };
-        //        var Updated = _employeeService.UpdateEmployee(departmentToUpdate) > 0;
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(employee);
+            }
+            var message = string.Empty;
+            try
+            {
+                
+                var Updated = _employeeService.UpdateEmployee(employee) > 0;
 
-        //        if (Updated)
-        //            return RedirectToAction("Index");
+                if (Updated)
+                    return RedirectToAction("Index");
 
-        //        message = "an error has occured during updating the employee";
+                message = "an error has occured during updating the employee";
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //1.log Exception
-        //        _logger.LogError(ex, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                //1.log Exception
+                _logger.LogError(ex, ex.Message);
 
-        //        //2.set Message
-        //        message = _environment.IsDevelopment() ? ex.Message : "an error has occured during updating the employee";
+                //2.set Message
+                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during updating the employee";
 
-        //    }
-        //    ModelState.AddModelError(string.Empty, message);
-        //    return View(EmployeeEditViewModel);
-        //}
-        //#endregion
+            }
+            ModelState.AddModelError(string.Empty, message);
+            return View(employee);
+        }
+        #endregion
 
         #region Delete
 
