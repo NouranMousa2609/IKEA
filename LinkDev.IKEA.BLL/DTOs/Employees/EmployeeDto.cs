@@ -29,5 +29,6 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         public string Gender { get; set; }=null!;
 
         public string EmployeeType { get; set; }= null!;
+
     }
 }

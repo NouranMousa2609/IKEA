@@ -37,6 +37,13 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         [Display(Name = "Hiring Date")]
         public DateOnly HiringDate { get; set; }
 
-        
+
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+        public int LastModidiedBy { get; set; }
+        public DateTime LastModidiedOn { get; set; }
+
+
     }
 }
