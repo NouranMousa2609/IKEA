@@ -1,8 +1,9 @@
-﻿using LinkDev.IKEA.BLL.DTOs.Departments;
+﻿  using LinkDev.IKEA.BLL.DTOs.Departments;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
@@ -57,16 +58,15 @@ namespace LinkDev.IKEA.PL.Controllers
                     Description = departmentVM.Description,
                     CreationDate = departmentVM.CreationDate,
                 };
-                var Result = _departmentService.CreateDepartment(CreatedDepartment);
-
-                if (Result > 0)
-                    return RedirectToAction(nameof(Index));
-                else
+                var Result = _departmentService.CreateDepartment(CreatedDepartment) > 0;
+                //3.Temp Data :used to transfer data between two request
+                if (!Result)
                 {
                     message = "Department is not created";
-                    ModelState.TryAddModelError(string.Empty, message);
-                    return View(departmentVM);
                 }
+               
+                ModelState.AddModelError(string.Empty, message);
+                return View(departmentVM);
 
             }
             catch (Exception ex)
@@ -76,10 +76,10 @@ namespace LinkDev.IKEA.PL.Controllers
 
                 //2.set Message
                 message = _environment.IsDevelopment() ? ex.Message : "an error has occured during creating the department";
-
+                TempData["Message"] = message;
+                return RedirectToAction(nameof(Index));
             }
-            ModelState.AddModelError(string.Empty, message);
-            return View(departmentVM);
+           
         }
         #endregion
 
