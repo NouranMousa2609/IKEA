@@ -22,7 +22,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
         public IEnumerable<DepartmentDto> GetAllDeparments()
         {
-            var departments = _departmentRepository.GetAllASIQueryable().Select(department => new DepartmentDto
+            var departments = _departmentRepository.GetAllASIQueryable().Where(D=>!D.IsDeleted).Select(department => new DepartmentDto
 
             {
                 Id = department.Id,

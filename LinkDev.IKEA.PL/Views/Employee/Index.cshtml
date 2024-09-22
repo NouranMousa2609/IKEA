@@ -43,26 +43,9 @@
                     <td>@Html.DisplayFor(X=>employee .IsActive)</td>
                     <td>@Html.DisplayFor(X=>employee .Gender)</td>
                     <td>@Html.DisplayFor(X=>employee .EmployeeType)</td>
-                          
-                    <td>
-                        <a asp-controller="Employee" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-warning">
 
-                            <i class="fas fa-eye"></i>Details
-                        </a>
-                    </td>
+                    <partial name="_ButtonsPartial" model="@employee.Id" />
 
-                    <td>
-                        <a asp-controller="Employee" asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-success">
-
-                            <i class="fa-duotone fa-solid fa-pen-to-square"></i>Update
-                        </a>
-                    </td>
-
-                    <td>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal-@employee.Id" data-id="@employee.Id">
-                            <i class="fas fa-trash"></i>Delete
-                        </button>
-                    </td>
                 </tr>
 
                 <!-- Modal -->

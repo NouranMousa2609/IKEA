@@ -1,0 +1,76 @@
+﻿@model DepartmentDetailsDto
+
+
+@*     Genral Tab Content *@
+<div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="home-tab">
+    <div class action="row">
+
+        <div class="form-group col-6 mb-3">
+            <label asp-for="Code" class="formInput"></label>
+            <input asp-for="Code" class="form-control" readonly>
+        </div>
+
+        <div class="form-group col-6 mb-3">
+            <label asp-for="Name" class="formInput"></label>
+            <input asp-for="Name" class="form-control" readonly>
+        </div>
+
+        <div class="form-group col-6 mb-3">
+            <label asp-for="Description" class="formInput"></label>
+            <input asp-for="Description" class="form-control" readonly>
+        </div>
+
+        <div class="form-group col-6 mb-3">
+            <label asp-for="CreationDate" class="formInput"></label>
+            <input asp-for="CreationDate" class="form-control" readonly>
+        </div>
+
+    </div>
+</div>
+
+@*     Admin Tab Content *@
+<div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="profile-tab">
+
+
+    <div class="form-group col-6 mb-3">
+        <label asp-for="CreatedOn" class="formInput"></label>
+        <input asp-for="CreatedOn" class="form-control" readonly>
+    </div>
+
+    <div class="form-group col-6 mb-3">
+        <label asp-for="CreatedBy" class="formInput"></label>
+        <input asp-for="CreatedBy" class="form-control" readonly>
+    </div>
+
+    <div class="form-group col-6 mb-3">
+        <label asp-for="LastModidiedOn" class="formInput"></label>
+        <input asp-for="LastModidiedOn" class="form-control" readonly>
+    </div>
+
+    <div class="form-group col-6 mb-3">
+        <label asp-for="LastModidiedBy" class="formInput"></label>
+        <input asp-for="LastModidiedBy" class="form-control" readonly>
+    </div>
+
+
+</div>
+@if (ViewBag.Title == "Details")
+{
+    <div class="mt-3 ">
+        <a asp-action="Edit" asp-route-id="@ViewBag.Id" class="btn btn-success">Edit</a>
+
+        <a asp-action="Index" class="btn btn-light">Back To List </a>
+    </div>
+}
+else
+{
+
+    <form asp-action="Delete" asp-route-id="@ViewBag.Id" method="post" class="mt-4">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-dark">Cancel</a>
+    </form>
+
+}
+
+
+</div>
