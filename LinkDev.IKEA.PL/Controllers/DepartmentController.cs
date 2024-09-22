@@ -60,13 +60,16 @@ namespace LinkDev.IKEA.PL.Controllers
                 };
                 var Result = _departmentService.CreateDepartment(CreatedDepartment) > 0;
                 //3.Temp Data :used to transfer data between two request
-                if (!Result)
+                if (Result)
                 {
-                    message = "Department is not created";
+                    TempData["Massage"] = "Department is created";
+                    return RedirectToAction(nameof(Index));
                 }
-               
-                ModelState.AddModelError(string.Empty, message);
-                return View(departmentVM);
+                else
+                {
+                    TempData["Massage"] = "Department is created";
+
+                }
 
             }
             catch (Exception ex)
@@ -76,10 +79,10 @@ namespace LinkDev.IKEA.PL.Controllers
 
                 //2.set Message
                 message = _environment.IsDevelopment() ? ex.Message : "an error has occured during creating the department";
-                TempData["Message"] = message;
-                return RedirectToAction(nameof(Index));
+
             }
-           
+            ModelState.AddModelError(string.Empty, message);
+            return View(departmentVM);
         }
         #endregion
 

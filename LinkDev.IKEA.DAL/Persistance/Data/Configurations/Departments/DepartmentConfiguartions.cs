@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.DAL.Entities.Departments;
+using LinkDev.IKEA.DAL.Entities.Employees;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -19,7 +20,9 @@ namespace LinkDev.IKEA.DAL.Persistance.Data.Configurations.Departments
             builder.Property(D => D.CreatedOn).HasDefaultValueSql("GETDATE()");
             builder.Property(D => D.LastModidiedOn).HasComputedColumnSql("GETDATE()");
 
-
+            builder.HasMany(D => D.Employees)
+                .WithOne((E => E.Department))
+                .HasForeignKey(E => E.DepartmentId).OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

@@ -1,7 +1,9 @@
-﻿
+﻿@inject IDepartmentService _departmentService
 @model UpdatedEmployeeDto
 @{
     ViewData["Title"] = "Edit";
+    var Departments = new SelectList(_departmentService.GetAllDeparments(), nameof(DepartmentDto.Id), nameof(DepartmentDto.Name));
+
 }
 
 <div class="row justify-content-center align-items-center flex-column">
@@ -17,6 +19,12 @@
             <label class=" form-label" asp-for="Email"></label>
             <input asp-for="Email" class="form-control" />
             <span asp-validation-for="Email" class=" text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label mb-2 " asp-for="DepartmentId"></label>
+            <select asp-for="DepartmentId" asp-items="@Departments" class="col-form-label">
+                <option value="@null"> Choose...</option>
+            </select>
         </div>
         <div class=" input-group mt-3">
             <label class=" form-label" asp-for="Address"></label>

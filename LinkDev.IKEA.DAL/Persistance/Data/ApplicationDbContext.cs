@@ -16,6 +16,8 @@ namespace LinkDev.IKEA.DAL.Persistance.Data
         {
             
         }
+
+
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         // => optionsBuilder.UseSqlServer("Server = DESKTOP-5P13SE6\\SQLEXPRESS; Database = IKEA;Trusted_Connection=True;TrustServerCertificate=True;");
 

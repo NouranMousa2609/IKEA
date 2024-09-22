@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.DAL.Common;
+using LinkDev.IKEA.DAL.Entities.Departments;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -28,6 +29,9 @@ namespace LinkDev.IKEA.DAL.Entities.Employees
         public Gender Gender { get; set; }
 
         public EmpType EmployeeType { get; set; }
+
+        public int?  DepartmentId { get; set; }
+        public virtual Department? Department { get; set; }
 
     }
 }

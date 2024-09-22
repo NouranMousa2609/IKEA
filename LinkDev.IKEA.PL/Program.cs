@@ -24,7 +24,7 @@ namespace LinkDev.IKEA.PL
             //optionsLifetime:ServiceLifetime.Scoped,
             (optionsBuilder)=>
             {
-                optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                optionsBuilder.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             }/*,contextLifetime:ServiceLifetime.Scoped,optionsLifetime:ServiceLifetime.Scoped*/
             );
             builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
