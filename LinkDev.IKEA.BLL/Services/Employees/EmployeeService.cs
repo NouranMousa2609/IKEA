@@ -1,8 +1,10 @@
 ﻿using Azure;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.DAL.Common;
+using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Persistance.Repositories.Employees;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +40,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 CreatedBy = 1,
                 LastModidiedBy = 1,
                 LastModidiedOn=DateTime.UtcNow,
-
+                DepartmentId= EmployeeDto.DepartmentId,
+                
 
             };
 
@@ -55,19 +58,21 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            return _employeeRepository.GetAllASIQueryable().Where(X=>!X.IsDeleted).Select(employee=> new EmployeeDto()
+            var employees = _employeeRepository.GetAllASIQueryable().Where(X => !X.IsDeleted).Include(E=>E.Department).Select(employee => new EmployeeDto()
             {
                 Id = employee.Id,
                 Name = employee.Name,
                 Age = employee.Age,
                 Salary = employee.Salary,
                 IsActive = employee.IsActive,
-                Email = employee.Email,              
+                Email = employee.Email,
                 Gender = nameof(employee.Gender),
                 EmployeeType = nameof(employee.EmployeeType),
-               
+                Department = employee.Department.Name??""
 
-            });
+
+            }).ToList();
+            return employees;
         }
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
@@ -87,7 +92,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 PhoneNumber = employee.PhoneNumber,
                 HiringDate = employee.HiringDate,
                 Gender = employee.Gender,
-                EmployeeType = employee.EmployeeType
+                EmployeeType = employee.EmployeeType,
+                Department=employee.Department.Name,
 
             };
             return null;

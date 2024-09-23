@@ -1,8 +1,9 @@
-﻿using LinkDev.IKEA.BLL.DTOs.Departments;
+﻿  using LinkDev.IKEA.BLL.DTOs.Departments;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
@@ -41,24 +42,33 @@ namespace LinkDev.IKEA.PL.Controllers
         }
 
         [HttpPost]
-
-        public IActionResult Create(CreatedDepartmentDto department)
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(DepartmentViewModel departmentVM)
         {
             if (!ModelState.IsValid)
-                return View(department);
+                return View(departmentVM);
 
             var message = string.Empty;
             try
             {
-                var Result = _departmentService.CreateDepartment(department);
-
-                if (Result > 0)
+                var CreatedDepartment = new CreatedDepartmentDto()
+                {
+                    Code = departmentVM.Code,
+                    Name = departmentVM.Name,
+                    Description = departmentVM.Description,
+                    CreationDate = departmentVM.CreationDate,
+                };
+                var Result = _departmentService.CreateDepartment(CreatedDepartment) > 0;
+                //3.Temp Data :used to transfer data between two request
+                if (Result)
+                {
+                    TempData["Massage"] = "Department is created";
                     return RedirectToAction(nameof(Index));
+                }
                 else
                 {
-                    message = "Department is not created";
-                    ModelState.TryAddModelError(string.Empty, message);
-                    return View(department);
+                    TempData["Massage"] = "Department is created";
+
                 }
 
             }
@@ -72,7 +82,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
             }
             ModelState.AddModelError(string.Empty, message);
-            return View(department);
+            return View(departmentVM);
         }
         #endregion
 
@@ -95,6 +105,9 @@ namespace LinkDev.IKEA.PL.Controllers
             }
             return View(department);
         }
+        #endregion
+
+        #region Edit
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -110,7 +123,7 @@ namespace LinkDev.IKEA.PL.Controllers
                 return NotFound();
 
             }
-            return View(new DepartmentEditViewModel()
+            return View(new DepartmentViewModel()
             {
 
                 Code = department.Code,
@@ -120,12 +133,13 @@ namespace LinkDev.IKEA.PL.Controllers
 
             });
         }
-        #endregion
+        
 
-        #region Edit
+       
 
         [HttpPost]
-        public IActionResult Edit([FromRoute] int id, DepartmentEditViewModel departmentVM)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit([FromRoute] int id, DepartmentViewModel departmentVM)
         {
             if (!ModelState.IsValid)
             {
@@ -181,6 +195,8 @@ namespace LinkDev.IKEA.PL.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int id)
         {
             var message = string.Empty;

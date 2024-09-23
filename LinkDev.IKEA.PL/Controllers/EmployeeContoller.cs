@@ -14,10 +14,11 @@ namespace LinkDev.IKEA.PL.Controllers
     {
         #region SERVICES
         private readonly IEmployeeService _employeeService;
+        private readonly IDepartmentService? _departmentService;
         private readonly ILogger<Employee> _logger;
         private readonly IWebHostEnvironment _environment;
 
-        public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment)
+        public EmployeeController( IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment)
         {
             _employeeService = employeeService;
             _logger = logger;
@@ -40,10 +41,12 @@ namespace LinkDev.IKEA.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
+            
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
 
         public IActionResult Create(CreatedEmployeeDto employee)
         {
@@ -138,6 +141,8 @@ namespace LinkDev.IKEA.PL.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
@@ -175,6 +180,8 @@ namespace LinkDev.IKEA.PL.Controllers
       
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
+
         public IActionResult Delete(int id)
         {
             var message = string.Empty;

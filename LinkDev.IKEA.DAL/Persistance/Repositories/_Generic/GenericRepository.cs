@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
 {
-    public class GenericRepository<T> where T : ModelBase
+    public class GenericRepository<T> :IGenericRepository<T> where T: ModelBase
         
     {
         private protected readonly ApplicationDbContext _dbContext;

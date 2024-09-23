@@ -43,5 +43,7 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         public Gender Gender { get; set; }
 
         public EmpType EmployeeType { get; set; }
+        public int? DepartmentId { get; set; }
+
     }
 }

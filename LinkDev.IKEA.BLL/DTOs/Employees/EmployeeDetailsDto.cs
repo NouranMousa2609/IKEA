@@ -45,5 +45,7 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         public DateTime LastModidiedOn { get; set; }
 
 
+        public string? Department { get; set; }
+
     }
 }
