@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.BLL.DTOs.Departments;
+using LinkDev.IKEA.BLL.DTOs.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;

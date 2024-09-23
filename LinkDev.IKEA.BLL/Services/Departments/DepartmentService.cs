@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.BLL.DTOs.Departments;
+using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Persistance.Repositories.Departments;
 using Microsoft.EntityFrameworkCore;
