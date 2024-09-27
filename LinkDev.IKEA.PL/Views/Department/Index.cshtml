@@ -5,26 +5,22 @@
 
 }
 @if (!string.IsNullOrEmpty(@TempData["Message"] as string))
-{
-    <button type="button" class="btn btn-primary" id="liveToastBtn">Show live toast</button>
+    
+    {
+        <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true">
+                <div class="toast-header">
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <img src="..." class="rounded me-2" alt="...">
-                <strong class="me-auto">IKEA</strong>
-                <small>11 mins ago</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                @TempData["Message"]
+                    <strong class="me-auto" style="background-color:bl"><i class="fa-solid fa-bell  fa-2x" style="color:tomato"></i></strong>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body" style="  color:tomato ; font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ;font-size:large">
+                    @TempData["Message"]
+                </div>
             </div>
         </div>
-    </div>
-
-
-
-}
+    }
 
 
 
