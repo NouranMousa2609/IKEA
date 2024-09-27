@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Services.Employees
 {
-    public class EmployeeService:IEmployeeService
+    public class EmployeeService : IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
 
@@ -30,7 +30,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 Name = EmployeeDto.Name,
                 Age = EmployeeDto.Age,
                 Address = EmployeeDto.Address,
-                Salary=EmployeeDto.Salary,
+                Salary = EmployeeDto.Salary,
                 IsActive = EmployeeDto.IsActive,
                 Email = EmployeeDto.Email,
                 PhoneNumber = EmployeeDto.PhoneNumber,
@@ -39,9 +39,9 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 EmployeeType = EmployeeDto.EmployeeType,
                 CreatedBy = 1,
                 LastModidiedBy = 1,
-                LastModidiedOn=DateTime.UtcNow,
-                DepartmentId= EmployeeDto.DepartmentId,
-                
+                LastModidiedOn = DateTime.UtcNow,
+                DepartmentId = EmployeeDto.DepartmentId,
+
 
             };
 
@@ -52,13 +52,13 @@ namespace LinkDev.IKEA.BLL.Services.Employees
         {
             var employee = _employeeRepository.Get(id);
             if (employee is { })
-                return _employeeRepository.Delete(employee)>0;
+                return _employeeRepository.Delete(employee) > 0;
             return false;
         }
 
         public IEnumerable<EmployeeDto> GetAllEmployees()
         {
-            var employees = _employeeRepository.GetAllASIQueryable().Where(X => !X.IsDeleted).Include(E=>E.Department).Select(employee => new EmployeeDto()
+            var employees = _employeeRepository.GetAllASIQueryable().Where(X => !X.IsDeleted).Include(E => E.Department).Select(employee => new EmployeeDto()
             {
                 Id = employee.Id,
                 Name = employee.Name,
@@ -68,7 +68,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 Email = employee.Email,
                 Gender = nameof(employee.Gender),
                 EmployeeType = nameof(employee.EmployeeType),
-                Department = employee.Department.Name??""
+                Department = employee.Department.Name ?? ""
 
 
             }).ToList();
@@ -77,25 +77,25 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-           var employee =_employeeRepository.Get(id);
-            if (employee is { })
-            return new EmployeeDetailsDto()
-            {
+            var employee = _employeeRepository.Get(id);
+            if (employee is not null)
+                return new EmployeeDetailsDto()
+                {
 
-                Id = employee.Id,
-                Name = employee.Name,
-                Age = employee.Age,
-                Address = employee.Address,
-                Salary = employee.Salary,
-                IsActive = employee.IsActive,
-                Email = employee.Email,
-                PhoneNumber = employee.PhoneNumber,
-                HiringDate = employee.HiringDate,
-                Gender = employee.Gender,
-                EmployeeType = employee.EmployeeType,
-                Department=employee.Department.Name,
+                    Id = employee.Id,
+                    Name = employee.Name,
+                    Age = employee.Age,
+                    Address = employee.Address,
+                    Salary = employee.Salary,
+                    IsActive = employee.IsActive,
+                    Email = employee.Email,
+                    PhoneNumber = employee.PhoneNumber,
+                    HiringDate = employee.HiringDate,
+                    Gender = employee.Gender,
+                    EmployeeType = employee.EmployeeType,
+                    Department = employee.Department?.Name,
 
-            };
+                };
             return null;
         }
 
@@ -103,7 +103,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
         {
             var employee = new Employee()
             {
-                Id=EmployeeDto.Id,
+                Id = EmployeeDto.Id,
                 Name = EmployeeDto.Name,
                 Age = EmployeeDto.Age,
                 Address = EmployeeDto.Address,
@@ -117,7 +117,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 CreatedBy = 1,
                 LastModidiedBy = 1,
                 LastModidiedOn = DateTime.UtcNow,
-
+                DepartmentId = EmployeeDto.DepartmentId
 
             };
 

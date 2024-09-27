@@ -2,12 +2,13 @@
 @model DepartmentDetailsDto
 @{
     ViewData["Title"] = "Details";
-    ViewData["ID"] = Model.Id;
+    ViewData["Id"] = Model.Id;
 }
 
 <h1>Department Details</h1>
 
 <div class="tab-content" id="myTabContent">
-   
-    <partial name="Partials/DetailsDeleteDepartmentPartial"/>
+
+    <partial name="Partials/DetailsDeleteDepartmentPartial" />
 </div>
+

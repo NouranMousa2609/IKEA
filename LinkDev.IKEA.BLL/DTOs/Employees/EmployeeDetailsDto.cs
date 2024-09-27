@@ -18,9 +18,9 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         [DataType(DataType.Currency)]
 
         public decimal Salary { get; set; }
-        [Display(Name = "Is Active")]
 
         public string? Address { get; set; }
+        [Display(Name = "Is Active")]
 
         public bool IsActive { get; set; }
 

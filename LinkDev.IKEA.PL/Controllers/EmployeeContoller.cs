@@ -18,7 +18,7 @@ namespace LinkDev.IKEA.PL.Controllers
         private readonly ILogger<Employee> _logger;
         private readonly IWebHostEnvironment _environment;
 
-        public EmployeeController( IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment)
+        public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment)
         {
             _employeeService = employeeService;
             _logger = logger;
@@ -41,7 +41,7 @@ namespace LinkDev.IKEA.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            
+
             return View();
         }
 
@@ -121,18 +121,18 @@ namespace LinkDev.IKEA.PL.Controllers
             }
             return View(new UpdatedEmployeeDto()
             {
-                Name=employee.Name,
-                Address=employee.Address,
-                Age=employee.Age,
-                Email=employee.Email,
-                HiringDate=employee.HiringDate,
-                IsActive=employee.IsActive,
-                PhoneNumber=employee.PhoneNumber,
-                Salary=employee.Salary,
-                EmployeeType=employee.EmployeeType,
-                Gender=employee.Gender,
+                Name = employee.Name,
+                Address = employee.Address,
+                Age = employee.Age,
+                Email = employee.Email,
+                HiringDate = employee.HiringDate,
+                IsActive = employee.IsActive,
+                PhoneNumber = employee.PhoneNumber,
+                Salary = employee.Salary,
+                EmployeeType = employee.EmployeeType,
+                Gender = employee.Gender,
 
-               
+
 
             });
         }
@@ -152,7 +152,7 @@ namespace LinkDev.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                
+
                 var Updated = _employeeService.UpdateEmployee(employee) > 0;
 
                 if (Updated)
@@ -177,7 +177,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #region Delete
 
-      
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -206,8 +206,8 @@ namespace LinkDev.IKEA.PL.Controllers
             }
             ModelState.AddModelError(string.Empty, message);
             return RedirectToAction(nameof(Index));
-        }  
+        }
         #endregion
-       
+
     }
 }
