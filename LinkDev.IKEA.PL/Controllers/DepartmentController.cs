@@ -43,46 +43,41 @@ namespace LinkDev.IKEA.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(DepartmentViewModel departmentVM)
+        public IActionResult Create(DepartmentViewModel departmentvm)
         {
             if (!ModelState.IsValid)
-                return View(departmentVM);
+                return View(departmentvm);
 
-            var message = string.Empty;
+            var Message = string.Empty;
             try
             {
-                var CreatedDepartment = new CreatedDepartmentDto()
+                var Created = new CreatedDepartmentDto()
                 {
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate,
+                    Code = departmentvm.Code,
+                    Name = departmentvm.Name,
+                    CreationDate = departmentvm.CreationDate,
+                    Description = departmentvm.Description,
                 };
-                var Result = _departmentService.CreateDepartment(CreatedDepartment) > 0;
-                //3.Temp Data :used to transfer data between two request
-                if (Result)
-                {
-                    TempData["Massage"] = "Department is created";
-                    return RedirectToAction(nameof(Index));
-                }
+                var department = _departmentService.CreateDepartment(Created);
+                if (department > 0)
+                    TempData["Message"] = "Created Successfully";
                 else
-                {
-                    TempData["Massage"] = "Department is created";
+                    TempData["Message"] = "Failed To Create ";
 
-                }
+
+                return RedirectToAction("Index");
+
 
             }
             catch (Exception ex)
             {
-                //1.log Exception
                 _logger.LogError(ex, ex.Message);
 
-                //2.set Message
-                message = _environment.IsDevelopment() ? ex.Message : "an error has occured during creating the department";
+                Message = _environment.IsDevelopment() ? ex.Message : "Failed To Create";
 
             }
-            ModelState.AddModelError(string.Empty, message);
-            return View(departmentVM);
+            ModelState.AddModelError(string.Empty, Message);
+            return View(departmentvm);
         }
         #endregion
 
