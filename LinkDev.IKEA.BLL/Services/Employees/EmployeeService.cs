@@ -56,9 +56,13 @@ namespace LinkDev.IKEA.BLL.Services.Employees
             return false;
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployees()
+        public IEnumerable<EmployeeDto> GetEmployees(string search)
         {
-            var employees = _employeeRepository.GetAllASIQueryable().Where(X => !X.IsDeleted).Include(E => E.Department).Select(employee => new EmployeeDto()
+            var employees = _employeeRepository.
+                 GetAllASIQueryable()
+                .Where(X => !X.IsDeleted && (string.IsNullOrEmpty(search)||X.Name.ToLower().Contains(search.ToLower())))
+                .Include(E => E.Department)
+                .Select(employee => new EmployeeDto()
             {
                 Id = employee.Id,
                 Name = employee.Name,
@@ -123,5 +127,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             return _employeeRepository.Update(employee);
         }
+
+        
     }
 }
