@@ -18,12 +18,14 @@ namespace LinkDev.IKEA.PL.Controllers
         private readonly IDepartmentService? _departmentService;
         private readonly ILogger<Employee> _logger;
         private readonly IWebHostEnvironment _environment;
-        
-        public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment)
+        private readonly IMapper _mapper;
+
+        public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment,IMapper mapper)
         {
             _employeeService = employeeService;
             _logger = logger;
             _environment = environment;
+            _mapper = mapper;
         }
         #endregion
 
@@ -125,22 +127,25 @@ namespace LinkDev.IKEA.PL.Controllers
                 return NotFound();
 
             }
-            return View(new UpdatedEmployeeDto()
-            {
-                Name = employee.Name,
-                Address = employee.Address,
-                Age = employee.Age,
-                Email = employee.Email,
-                HiringDate = employee.HiringDate,
-                IsActive = employee.IsActive,
-                PhoneNumber = employee.PhoneNumber,
-                Salary = employee.Salary,
-                EmployeeType = employee.EmployeeType,
-                Gender = employee.Gender,
+            var UpdatedEmployee= _mapper.Map < UpdatedEmployeeDto >(employee);
+            return View(UpdatedEmployee);
+                
+            //View(new UpdatedEmployeeDto()
+            //{
+            //    Name = employee.Name,
+            //    Address = employee.Address,
+            //    Age = employee.Age,
+            //    Email = employee.Email,
+            //    HiringDate = employee.HiringDate,
+            //    IsActive = employee.IsActive,
+            //    PhoneNumber = employee.PhoneNumber,
+            //    Salary = employee.Salary,
+            //    EmployeeType = employee.EmployeeType,
+            //    Gender = employee.Gender,
 
 
 
-            });
+            //});
         }
 
 
