@@ -1,0 +1,15 @@
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LinkDev.IKEA.BLL.Common.Services.Attachments
+{
+    internal interface IAttachmentService
+    {
+        string Upload (IFormFile file, string FolderName);
+        bool Delete(string filePath);
+    }
+}
