@@ -127,7 +127,7 @@ namespace LinkDev.IKEA.PL.Controllers
                 return NotFound();
 
             }
-            var UpdatedEmployee= _mapper.Map < UpdatedEmployeeDto >(employee);
+            var UpdatedEmployee= _mapper.Map <UpdatedEmployeeDto>(employee);
             return View(UpdatedEmployee);
                 
             //View(new UpdatedEmployeeDto()

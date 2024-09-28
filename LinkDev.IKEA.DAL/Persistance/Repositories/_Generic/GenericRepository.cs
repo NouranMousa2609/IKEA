@@ -41,25 +41,17 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
             ///return T;
             ///
         }
-        public int Add(T entity)
-        {
-            _dbContext.Set<T>().Add(entity);
+        public void Add(T entity)=> _dbContext.Set<T>().Add(entity);
 
-            return _dbContext.SaveChanges();
-        }
+         
 
-        public int Update(T entity)
-        {
-            _dbContext.Set<T>().Update(entity);
+        public void Update(T entity)=>   _dbContext.Set<T>().Update(entity);
 
-            return _dbContext.SaveChanges();
-        }
-        public int Delete(T entity)
+        public void Delete(T entity)
         {
             entity.IsDeleted = true;
             _dbContext.Set<T>().Update(entity);
 
-            return _dbContext.SaveChanges();
         }
 
         public IQueryable<T> GetAllASIQueryable()

@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using LinkDev.IKEA.BLL.DTOs.Departments;
-using LinkDev.IKEA.BLL.DTOs.Employees;
-using LinkDev.IKEA.BLL.Services.Departments;
+ using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers
@@ -88,7 +86,7 @@ namespace LinkDev.IKEA.PL.Controllers
             return Redirect(nameof(Index));
         }
         #endregion
-
+         
         #region Details
 
         [HttpGet]

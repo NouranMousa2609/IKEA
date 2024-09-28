@@ -4,6 +4,7 @@ using LinkDev.IKEA.DAL.Common;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Persistance.Repositories.Employees;
+using LinkDev.IKEA.DAL.Persistance.UnitOfwork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -17,11 +18,11 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 {
     public class EmployeeService : IEmployeeService
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        public EmployeeService(IUnitOfWork unitOfWork)
         {
-            _employeeRepository = employeeRepository;
+           _unitOfWork = unitOfWork;
         }
 
         public int CreateEmployee(CreatedEmployeeDto EmployeeDto)
@@ -46,20 +47,23 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
-            return _employeeRepository.Add(employee);
+             _unitOfWork.EmployeeRepository.Add(employee);
+            return _unitOfWork.Complete();
         }
 
         public bool DeleteEmployee(int id)
         {
-            var employee = _employeeRepository.Get(id);
+            var employeeRepo=_unitOfWork.EmployeeRepository;
+
+            var employee = employeeRepo.Get(id);
             if (employee is { })
-                return _employeeRepository.Delete(employee) > 0;
-            return false;
+                 employeeRepo.Delete(employee);
+            return _unitOfWork.Complete()>0;
         }
 
         public IEnumerable<EmployeeDto> GetEmployees(string search)
         {
-            var employees = _employeeRepository.
+            var employees = _unitOfWork.EmployeeRepository.
                  GetAllASIQueryable()
                 .Where(X => !X.IsDeleted && (string.IsNullOrEmpty(search)||X.Name.ToLower().Contains(search.ToLower())))
                 .Include(E => E.Department)
@@ -82,7 +86,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
         public EmployeeDetailsDto? GetEmployeeById(int id)
         {
-            var employee = _employeeRepository.Get(id);
+            var employee = _unitOfWork.EmployeeRepository.Get(id);
             if (employee is not null)
                 return new EmployeeDetailsDto()
                 {
@@ -126,7 +130,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
-            return _employeeRepository.Update(employee);
+             _unitOfWork.EmployeeRepository.Update(employee);
+            return _unitOfWork.Complete();
         }
 
         

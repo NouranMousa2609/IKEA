@@ -2,6 +2,7 @@
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Persistance.Repositories.Departments;
+using LinkDev.IKEA.DAL.Persistance.UnitOfwork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,16 +14,16 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 {
     public class DepartmentService:IDepartmentService
     {
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DepartmentService(IDepartmentRepository departmentRepository)
+        public DepartmentService(IUnitOfWork unitOfWork)
         {
-            _departmentRepository = departmentRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<DepartmentDto> GetAllDeparments()
         {
-            var departments = _departmentRepository.GetAllASIQueryable().Where(D=>!D.IsDeleted).Select(department => new DepartmentDto
+            var departments = _unitOfWork.DepartmentRepository.GetAllASIQueryable().Where(D=>!D.IsDeleted).Select(department => new DepartmentDto
 
             {
                 Id = department.Id,
@@ -37,7 +38,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
         public DepartmentDetailsDto? GetDepartmentById(int id)
         {
-            var department = _departmentRepository.Get(id);
+            var department = _unitOfWork.DepartmentRepository.Get(id);
             if (department is { })
             {
                 return new DepartmentDetailsDto()
@@ -73,16 +74,18 @@ namespace LinkDev.IKEA.BLL.Services.Departments
                 LastModidiedOn = DateTime.UtcNow,
             };
 
-            return _departmentRepository.Add(Department);
+            _unitOfWork.DepartmentRepository.Add(Department);
+            return _unitOfWork.Complete();
         }
 
         public bool DeleteDepartment(int id)
         {
-            var department = _departmentRepository.Get(id);
+            var DepartmentRepo=_unitOfWork.DepartmentRepository;
+            var department = DepartmentRepo.Get(id);
             if (department is { })
-                return _departmentRepository.Delete(department) > 0;
+                DepartmentRepo.Delete(department);
             
-            return false;
+            return _unitOfWork.Complete()>0 ;
         }
 
         
@@ -101,7 +104,8 @@ namespace LinkDev.IKEA.BLL.Services.Departments
                 LastModidiedOn = DateTime.UtcNow,
             };
 
-            return _departmentRepository.Update(department);
+             _unitOfWork.DepartmentRepository.Update(department);
+            return _unitOfWork.Complete();
         }
     }
 }
