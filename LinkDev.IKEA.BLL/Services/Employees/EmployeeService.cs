@@ -5,6 +5,7 @@ using LinkDev.IKEA.DAL.Entities.Departments;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Persistance.Repositories.Employees;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Linq;

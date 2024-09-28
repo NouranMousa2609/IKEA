@@ -1,4 +1,5 @@
-﻿  using LinkDev.IKEA.BLL.DTOs.Departments;
+﻿using AutoMapper;
+using LinkDev.IKEA.BLL.DTOs.Departments;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Entities.Departments;
@@ -12,12 +13,14 @@ namespace LinkDev.IKEA.PL.Controllers
     {
         #region SERVICES
         private readonly IDepartmentService _departmentService;
+        private readonly IMapper _mapper;
         private readonly ILogger<Department> _logger;
         private readonly IWebHostEnvironment _environment;
 
-        public DepartmentController(IDepartmentService departmentService, ILogger<Department> logger, IWebHostEnvironment environment)
+        public DepartmentController(IDepartmentService departmentService, ILogger<Department> logger, IWebHostEnvironment environment,IMapper mapper)
         {
             _departmentService = departmentService;
+            _mapper = mapper;
             _logger = logger;
             _environment = environment;
         }
@@ -51,21 +54,23 @@ namespace LinkDev.IKEA.PL.Controllers
             var Message = string.Empty;
             try
             {
-                var Created = new CreatedDepartmentDto()
+                var CreatedDepartment = _mapper.Map<CreatedDepartmentDto>(departmentvm);
+                //{
+                //    Code = departmentvm.Code,
+                //    Name = departmentvm.Name,
+                //    CreationDate = departmentvm.CreationDate,
+                //    Description = departmentvm.Description,
+                //};
+                var Created = _departmentService.CreateDepartment(CreatedDepartment) >0;
+
+                if (!Created)
                 {
-                    Code = departmentvm.Code,
-                    Name = departmentvm.Name,
-                    CreationDate = departmentvm.CreationDate,
-                    Description = departmentvm.Description,
-                };
-                var department = _departmentService.CreateDepartment(Created);
-                if (department > 0)
-                    TempData["Message"] = "Created Successfully";
-                else
-                    TempData["Message"] = "Failed To Create ";
+                    Message = "Department is not created";
+                    ModelState.AddModelError(string.Empty, Message);
+                    return View(departmentvm);
+                   
 
-
-                return RedirectToAction("Index");
+                }
 
 
             }
@@ -75,9 +80,12 @@ namespace LinkDev.IKEA.PL.Controllers
 
                 Message = _environment.IsDevelopment() ? ex.Message : "Failed To Create";
 
+                TempData["Message"]=Message;
+                return RedirectToAction("Index");
+
             }
-            ModelState.AddModelError(string.Empty, Message);
-            return View(departmentvm);
+            
+            return Redirect(nameof(Index));
         }
         #endregion
 
@@ -118,15 +126,16 @@ namespace LinkDev.IKEA.PL.Controllers
                 return NotFound();
 
             }
-            return View(new DepartmentViewModel()
-            {
+            var DepartmentVM=_mapper.Map<DepartmentDetailsDto,DepartmentViewModel>(department);
+            return View(DepartmentVM);
+            //{
 
-                Code = department.Code,
-                Name = department.Name,
-                Description = department.Description,
-                CreationDate = department.CreationDate,
+            //    Code = department.Code,
+            //    Name = department.Name,
+            //    Description = department.Description,
+            //    CreationDate = department.CreationDate,
 
-            });
+            //});
         }
         
 
@@ -143,14 +152,14 @@ namespace LinkDev.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var departmentToUpdate = new UpdatedDepartmentDto()
-                {
-                    Id = id,
-                    Code = departmentVM.Code,
-                    Name = departmentVM.Name,
-                    Description = departmentVM.Description,
-                    CreationDate = departmentVM.CreationDate,
-                };
+                var departmentToUpdate = _mapper.Map<UpdatedDepartmentDto>(departmentVM);
+                //{
+                //    Id = id,
+                //    Code = departmentVM.Code,
+                //    Name = departmentVM.Name,
+                //    Description = departmentVM.Description,
+                //    CreationDate = departmentVM.CreationDate,
+                //};
                 var Updated = _departmentService.UpdateDepartment(departmentToUpdate) > 0;
 
                 if (Updated)

@@ -1,4 +1,5 @@
-﻿using LinkDev.IKEA.BLL.DTOs.Departments;
+﻿using AutoMapper;
+using LinkDev.IKEA.BLL.DTOs.Departments;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
@@ -17,7 +18,7 @@ namespace LinkDev.IKEA.PL.Controllers
         private readonly IDepartmentService? _departmentService;
         private readonly ILogger<Employee> _logger;
         private readonly IWebHostEnvironment _environment;
-
+        
         public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment)
         {
             _employeeService = employeeService;
