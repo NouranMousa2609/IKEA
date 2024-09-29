@@ -215,9 +215,9 @@ namespace LinkDev.IKEA.PL.Controllers
         }
         #endregion
 
-        public IActionResult Search(string search)
+        public async Task <IActionResult> Search(string search)
         {
-            var employees = _employeeService.GetEmployeesAsync(search);
+            var employees = await _employeeService.GetEmployeesAsync(search);
 
             
             return PartialView("Partials/_EmployeeListPartial", employees);
