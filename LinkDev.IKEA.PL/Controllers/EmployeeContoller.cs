@@ -31,9 +31,9 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #region Index
         [HttpGet] 
-        public IActionResult Index(string search)
+        public async Task <IActionResult> Index(string search)
         {
-            var employees = _employeeService.GetEmployees(search);
+            var employees =await _employeeService.GetEmployeesAsync(search);
             return View(employees);
 
         }
@@ -51,7 +51,7 @@ namespace LinkDev.IKEA.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Create(CreatedEmployeeDto employee)
+        public  async Task <IActionResult> Create(CreatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
                 return View(employee);
@@ -59,7 +59,7 @@ namespace LinkDev.IKEA.PL.Controllers
             var message = string.Empty;
             try
             {
-                var Result = _employeeService.CreateEmployee(employee);
+                var Result = await _employeeService.CreateEmployeeAsync(employee);
 
                 if (Result > 0)
                     return RedirectToAction(nameof(Index));
@@ -88,14 +88,14 @@ namespace LinkDev.IKEA.PL.Controllers
         #region Details
 
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task < IActionResult> Details(int? id)
         {
             if (id is null)
             {
 
                 return BadRequest();
             }
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee =await  _employeeService.GetEmployeeByIdAsync(id.Value);
 
             if (employee is null)
             {
@@ -115,7 +115,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
                 return BadRequest();
             }
-            var employee = _employeeService.GetEmployeeById(id.Value);
+            var employee = _employeeService.GetEmployeeByIdAsync(id.Value);
 
             if (employee is null)
             {
@@ -149,7 +149,7 @@ namespace LinkDev.IKEA.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
+        public async Task<IActionResult> Edit([FromRoute] int id, UpdatedEmployeeDto employee)
         {
             if (!ModelState.IsValid)
             {
@@ -159,7 +159,7 @@ namespace LinkDev.IKEA.PL.Controllers
             try
             {
 
-                var Updated = _employeeService.UpdateEmployee(employee) > 0;
+                var Updated = await _employeeService.UpdateEmployeeAsync(employee) > 0;
 
                 if (Updated)
                     return RedirectToAction("Index");
@@ -188,13 +188,13 @@ namespace LinkDev.IKEA.PL.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        public IActionResult Delete(int id)
+        public async Task <IActionResult> Delete(int id)
         {
             var message = string.Empty;
             try
             {
 
-                var Deleted = _employeeService.DeleteEmployee(id);
+                var Deleted = await _employeeService.DeleteEmployeeAsync(id);
                 if (Deleted)
                     return RedirectToAction("Index");
 
@@ -217,7 +217,7 @@ namespace LinkDev.IKEA.PL.Controllers
 
         public IActionResult Search(string search)
         {
-            var employees = _employeeService.GetEmployees(search);
+            var employees = _employeeService.GetEmployeesAsync(search);
 
             
             return PartialView("Partials/_EmployeeListPartial", employees);

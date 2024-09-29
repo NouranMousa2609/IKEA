@@ -12,7 +12,7 @@ namespace LinkDev.IKEA.BLL.Common.Services.Attachments
     {
         private readonly List<string> _allowedExtensions = new() { ".png", ".jpg", ".jpeg" };
         private const int _allowedMAxSize = 2_097_152;
-        public string? Upload(IFormFile file, string FolderName)
+        public async Task <string?> UploadAsync(IFormFile file, string FolderName)
         {
             var extension = Path.GetExtension(file.FileName);
             if (!_allowedExtensions.Contains(extension))
@@ -34,10 +34,10 @@ namespace LinkDev.IKEA.BLL.Common.Services.Attachments
             using var fileStream = new FileStream(filePath, FileMode.Create);
             //using var fileStream=File.Create(filePath);
 
-            file.CopyTo(fileStream);
+             await file.CopyToAsync(fileStream);
             return fileName;
         }
-        public bool Delete(string filePath)
+        public  bool Delete(string filePath)
         {
           if (File.Exists(filePath)) {
                 File.Delete(filePath);

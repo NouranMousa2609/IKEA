@@ -21,9 +21,9 @@ namespace LinkDev.IKEA.BLL.Services.Departments
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<DepartmentDto> GetAllDeparments()
+        public async Task< IEnumerable<DepartmentDto>> GetAllDeparmentsAsync()
         {
-            var departments = _unitOfWork.DepartmentRepository.GetAllASIQueryable().Where(D=>!D.IsDeleted).Select(department => new DepartmentDto
+            var departments = await _unitOfWork.DepartmentRepository.GetAllASIQueryable().Where(D=>!D.IsDeleted).Select(department => new DepartmentDto
 
             {
                 Id = department.Id,
@@ -31,14 +31,14 @@ namespace LinkDev.IKEA.BLL.Services.Departments
                 Code = department.Code,
                 CreationDate = department.CreationDate,
             }
-            ).AsNoTracking().ToList();
+            ).AsNoTracking().ToListAsync();
             
             return departments;
         }
 
-        public DepartmentDetailsDto? GetDepartmentById(int id)
+        public async Task < DepartmentDetailsDto?> GetDepartmentByIdAsync(int id)
         {
-            var department = _unitOfWork.DepartmentRepository.Get(id);
+            var department = await _unitOfWork.DepartmentRepository.GetAsync(id);
             if (department is { })
             {
                 return new DepartmentDetailsDto()
@@ -59,7 +59,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
 
 
-        public int CreateDepartment(CreatedDepartmentDto departmentDto)
+        public async Task <int> CreateDepartmentAsync(CreatedDepartmentDto departmentDto)
         {
 
             var Department = new Department()
@@ -74,23 +74,23 @@ namespace LinkDev.IKEA.BLL.Services.Departments
                 LastModidiedOn = DateTime.UtcNow,
             };
 
-            _unitOfWork.DepartmentRepository.Add(Department);
-            return _unitOfWork.Complete();
+             _unitOfWork.DepartmentRepository.Add(Department);
+            return await _unitOfWork.CompleteAsync();
         }
 
-        public bool DeleteDepartment(int id)
+        public async Task< bool> DeleteDepartmentAsync(int id)
         {
             var DepartmentRepo=_unitOfWork.DepartmentRepository;
-            var department = DepartmentRepo.Get(id);
+            var department = await DepartmentRepo.GetAsync(id);
             if (department is { })
                 DepartmentRepo.Delete(department);
             
-            return _unitOfWork.Complete()>0 ;
+            return await _unitOfWork.CompleteAsync()>0 ;
         }
 
         
        
-        public int UpdateDepartment(UpdatedDepartmentDto departmentDto)
+        public async Task <int> UpdateDepartmentAsync(UpdatedDepartmentDto departmentDto)
         {
 
             var department = new Department()
@@ -105,7 +105,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
             };
 
              _unitOfWork.DepartmentRepository.Update(department);
-            return _unitOfWork.Complete();
+            return await _unitOfWork.CompleteAsync();
         }
     }
 }
