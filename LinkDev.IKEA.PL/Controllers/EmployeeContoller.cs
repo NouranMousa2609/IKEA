@@ -30,15 +30,10 @@ namespace LinkDev.IKEA.PL.Controllers
         #endregion
 
         #region Index
-        [HttpGet] //Get:/Departments/Index
+        [HttpGet] 
         public IActionResult Index(string search)
         {
             var employees = _employeeService.GetEmployees(search);
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                return PartialView("_EmployeeListPartial", employees);
-            }
             return View(employees);
 
         }
@@ -219,6 +214,15 @@ namespace LinkDev.IKEA.PL.Controllers
             return RedirectToAction(nameof(Index));
         }
         #endregion
+
+        public IActionResult Search(string search)
+        {
+            var employees = _employeeService.GetEmployees(search);
+
+            
+            return PartialView("Partials/_EmployeeListPartial", employees);
+
+        }
 
     }
 }

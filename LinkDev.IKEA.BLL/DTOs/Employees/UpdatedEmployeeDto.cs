@@ -44,6 +44,8 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
 
         public EmpType EmployeeType { get; set; }
         public int? DepartmentId { get; set; }
+        public string? Image { get; set; }
+
 
     }
 }

@@ -1,3 +1,4 @@
+using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Persistance.Data;
@@ -31,6 +32,7 @@ namespace LinkDev.IKEA.PL
             }/*,contextLifetime:ServiceLifetime.Scoped,optionsLifetime:ServiceLifetime.Scoped*/
             );
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+            builder.Services.AddTransient<IAttachmentService,AttachmentService>();
             builder.Services.AddScoped<IDepartmentService,DepartmentService>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             //builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));

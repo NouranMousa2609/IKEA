@@ -1,4 +1,5 @@
 ﻿using Azure;
+using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.DAL.Common;
 using LinkDev.IKEA.DAL.Entities.Departments;
@@ -19,10 +20,12 @@ namespace LinkDev.IKEA.BLL.Services.Employees
     public class EmployeeService : IEmployeeService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IAttachmentService _attachmentService;
 
-        public EmployeeService(IUnitOfWork unitOfWork)
+        public EmployeeService(IUnitOfWork unitOfWork,IAttachmentService attachmentService)
         {
            _unitOfWork = unitOfWork;
+            _attachmentService = attachmentService;
         }
 
         public int CreateEmployee(CreatedEmployeeDto EmployeeDto)
@@ -47,6 +50,10 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
             };
 
+            if (EmployeeDto.Image != null)
+            {
+                employee.Image = _attachmentService.Upload(EmployeeDto.Image, "Images");
+            }
              _unitOfWork.EmployeeRepository.Add(employee);
             return _unitOfWork.Complete();
         }
@@ -75,9 +82,9 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 Salary = employee.Salary,
                 IsActive = employee.IsActive,
                 Email = employee.Email,
-                Gender = nameof(employee.Gender),
-                EmployeeType = nameof(employee.EmployeeType),
-                Department = employee.Department.Name ?? ""
+                Gender = employee.Gender,
+                EmployeeType = employee.EmployeeType,
+                Department = employee.Department.Name
 
 
             }).ToList();
@@ -126,7 +133,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 CreatedBy = 1,
                 LastModidiedBy = 1,
                 LastModidiedOn = DateTime.UtcNow,
-                DepartmentId = EmployeeDto.DepartmentId
+                DepartmentId = EmployeeDto.DepartmentId,
 
             };
 
