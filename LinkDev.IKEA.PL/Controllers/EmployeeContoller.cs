@@ -108,14 +108,14 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #region Edit
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task < IActionResult> Edit(int? id)
         {
             if (id is null)
             {
 
                 return BadRequest();
             }
-            var employee = _employeeService.GetEmployeeByIdAsync(id.Value);
+            var employee = await _employeeService.GetEmployeeByIdAsync(id.Value);
 
             if (employee is null)
             {

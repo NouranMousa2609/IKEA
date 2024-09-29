@@ -90,14 +90,14 @@ namespace LinkDev.IKEA.PL.Controllers
         #region Details
 
         [HttpGet]
-        public IActionResult Details(int? id)
+        public async Task <IActionResult> Details(int? id)
         {
             if (id is null)
             {
 
                 return BadRequest();
             }
-            var department = _departmentService.GetDepartmentByIdAsync(id.Value);
+            var department =await _departmentService.GetDepartmentByIdAsync(id.Value);
 
             if (department is null)
             {

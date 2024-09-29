@@ -68,7 +68,7 @@ namespace LinkDev.IKEA.DAL.Persistance.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
                 });
 
             modelBuilder.Entity("LinkDev.IKEA.DAL.Entities.Employees.Employee", b =>
@@ -139,7 +139,7 @@ namespace LinkDev.IKEA.DAL.Persistance.Data.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("LinkDev.IKEA.DAL.Entities.Employees.Employee", b =>
