@@ -18,9 +18,9 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         [DataType(DataType.Currency)]
 
         public decimal Salary { get; set; }
-        [Display(Name = "Is Active")]
 
         public string? Address { get; set; }
+        [Display(Name = "Is Active")]
 
         public bool IsActive { get; set; }
 
@@ -44,8 +44,11 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         public int LastModidiedBy { get; set; }
         public DateTime LastModidiedOn { get; set; }
 
+        public int? DepartmentId { get; set; }
 
         public string? Department { get; set; }
+
+        public string? Image { get; set; }
 
     }
 }

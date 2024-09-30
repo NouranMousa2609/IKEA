@@ -21,16 +21,16 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
             _dbContext = dbContext;
         }
 
-        public IEnumerable<T> GetAll(bool withAsNoTracking = true)
+        public async Task< IEnumerable<T> >GetAllAsync(bool withAsNoTracking = true)
         {
             if (withAsNoTracking)
-                return _dbContext.Set<T>().Where(X=>!X.IsDeleted).AsNoTracking().ToList();
+                return await _dbContext.Set<T>().Where(X=>!X.IsDeleted).AsNoTracking().ToListAsync();
 
-            return _dbContext.Set<T>().Where(X => !X.IsDeleted).ToList();
+            return await _dbContext.Set<T>().Where(X => !X.IsDeleted).ToListAsync();
         }
-        public T? Get(int id)
+        public async Task <T?> GetAsync(int id)
         {
-            return _dbContext.Set<T>().Find(id);
+            return await _dbContext.Set<T>().FindAsync(id);
             //return _dbContext.Find<T>(id);
 
             ///var T = _dbContext.Ts.Local.FirstOrDefault(D=>D.Id==id);
@@ -41,25 +41,17 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
             ///return T;
             ///
         }
-        public int Add(T entity)
-        {
-            _dbContext.Set<T>().Add(entity);
+        public void Add(T entity)=> _dbContext.Set<T>().Add(entity);
 
-            return _dbContext.SaveChanges();
-        }
+         
 
-        public int Update(T entity)
-        {
-            _dbContext.Set<T>().Update(entity);
+        public void Update(T entity)=>   _dbContext.Set<T>().Update(entity);
 
-            return _dbContext.SaveChanges();
-        }
-        public int Delete(T entity)
+        public void Delete(T entity)
         {
             entity.IsDeleted = true;
             _dbContext.Set<T>().Update(entity);
 
-            return _dbContext.SaveChanges();
         }
 
         public IQueryable<T> GetAllASIQueryable()
@@ -67,6 +59,9 @@ namespace LinkDev.IKEA.DAL.Persistance.Repositories._Generic
             return _dbContext.Set<T>();
         }
 
-        
+        public IEnumerable<T> GetAllAsIEnumerable()
+        {
+            return _dbContext.Set<T>().ToList();
+        }
     }
 }
