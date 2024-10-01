@@ -70,16 +70,17 @@ namespace LinkDev.IKEA.PL
                 option.AccessDeniedPath = "/Home/Error";
                 option.ExpireTimeSpan = TimeSpan.FromDays(5);
                 option.LogoutPath = "/Account/SignIn";
+
             });
 
             builder.Services.AddAuthentication();
-            builder.Services.AddAuthentication("Identity.Apllication");
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = "Identity.Apllication";
-                options.DefaultChallengeScheme = "Identity.Apllication";
+            //builder.Services.AddAuthentication("Identity.Apllication");
+            //builder.Services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = "Identity.Apllication";
+            //    options.DefaultChallengeScheme = "Identity.Apllication";
 
-            });
+            //});
 			//.AddCookie("Hamada", ".ASPNetCore.Hamada", option=>
 			//{
 			//option.LoginPath = "/Account/SignIn";
