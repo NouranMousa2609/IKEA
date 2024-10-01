@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LinkDev.IKEA.BLL.Common.Services.Attachments;
 using LinkDev.IKEA.BLL.DTOs.Departments;
 using LinkDev.IKEA.BLL.DTOs.Employees;
 using LinkDev.IKEA.BLL.Services.Departments;
@@ -18,13 +19,15 @@ namespace LinkDev.IKEA.PL.Controllers
         private readonly IDepartmentService? _departmentService;
         private readonly ILogger<Employee> _logger;
         private readonly IWebHostEnvironment _environment;
+        private readonly IAttachmentService _attachmentService;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment,IMapper mapper)
+        public EmployeeController(IEmployeeService employeeService, ILogger<Employee> logger, IWebHostEnvironment environment,IAttachmentService attachmentService,IMapper mapper)
         {
             _employeeService = employeeService;
             _logger = logger;
             _environment = environment;
+            _attachmentService = attachmentService;
             _mapper = mapper;
         }
         #endregion
@@ -122,9 +125,9 @@ namespace LinkDev.IKEA.PL.Controllers
                 return NotFound();
 
             }
-            var UpdatedEmployee= _mapper.Map <UpdatedEmployeeDto>(employee);
+            var UpdatedEmployee = _mapper.Map<UpdatedEmployeeDto>(employee);
             return View(UpdatedEmployee);
-                
+            //return
             //View(new UpdatedEmployeeDto()
             //{
             //    Name = employee.Name,
@@ -223,6 +226,8 @@ namespace LinkDev.IKEA.PL.Controllers
             return PartialView("Partials/_EmployeeListPartial", employees);
 
         }
+
+       
 
     }
 }

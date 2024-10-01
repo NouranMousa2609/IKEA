@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.DAL.Common;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -33,6 +34,7 @@ namespace LinkDev.IKEA.BLL.DTOs.Employees
         public string? Department { get; set; }
 
         public string? Image { get; set; }
+
 
     }
 }
