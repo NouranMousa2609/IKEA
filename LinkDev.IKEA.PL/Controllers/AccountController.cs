@@ -71,10 +71,48 @@ namespace LinkDev.IKEA.PL.Controllers
 
         #region SignIn
 
+        [HttpGet]
         public IActionResult SignIn()
         {
             return View();
         }
-        #endregion
-    }
+        [HttpPost]
+		public async Task< IActionResult> SignIn(SignInViewModel model)
+		{
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user is { })
+            {
+                var Flag = await _userManager.CheckPasswordAsync(user, model.Password);
+                if (Flag)
+                {
+                    var Result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
+
+                    if (Result.IsNotAllowed)
+                        ModelState.AddModelError(string.Empty, "Your account is not confirmed yet");
+
+                    if (Result.IsLockedOut)
+                        ModelState.AddModelError(string.Empty, "Your account is loked");
+
+                    //if(Result.RequiresTwoFactor)
+
+                    if (Result.Succeeded)
+                        return RedirectToAction(nameof(HomeController.Index), "Home");
+                }
+                
+                   
+			
+            }
+			ModelState.AddModelError(string.Empty, "Invalid login attempt");
+
+			return View(model);
+
+
+		}
+		#endregion
+	}
 }

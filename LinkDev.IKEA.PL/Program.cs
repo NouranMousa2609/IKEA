@@ -44,10 +44,10 @@ namespace LinkDev.IKEA.PL
             {
                 options.Password.RequiredLength = 5;
                 options.Password.RequireDigit = true;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequiredUniqueChars = 1;
+                //options.Password.RequireLowercase = true;
+                //options.Password.RequireUppercase = true;
+                //options.Password.RequireNonAlphanumeric = true;
+                //options.Password.RequiredUniqueChars = 1;
 
                 options.User.RequireUniqueEmail = true;
 
