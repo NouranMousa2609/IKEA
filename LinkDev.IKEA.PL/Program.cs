@@ -8,6 +8,7 @@ using LinkDev.IKEA.DAL.Persistance.Repositories.Employees;
 using LinkDev.IKEA.DAL.Persistance.UnitOfwork;
 using LinkDev.IKEA.PL.Mapping;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Reflection;
@@ -57,28 +58,52 @@ namespace LinkDev.IKEA.PL
 
 
             }).AddEntityFrameworkStores<ApplicationDbContext>();
-
-            //builder.Services.AddScoped<UserManager<ApplicationUser>>();
-            //builder.Services.AddScoped<SignInManager<ApplicationUser>>();
-            //builder.Services.AddScoped<RoleManager<IdentityRole>>();
-
+			//builder.Services.AddScoped<UserManager<ApplicationUser>>();
+			//builder.Services.AddScoped<SignInManager<ApplicationUser>>();
+			//builder.Services.AddScoped<RoleManager<IdentityRole>>();
 
 
-            ///builder.Services.AddScoped<ApplicationDbContext>();
-            ///builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>((ServiceProvider) =>
-            ///{
-            ///    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            ///
-            ///    optionsBuilder.UseSqlServer("");
-            ///
-            ///    var option=optionsBuilder.Options;
-            ///
-            ///    return option;
-            ///});
-            
-            #endregion
 
-            var app = builder.Build();
+			builder.Services.ConfigureApplicationCookie(option =>
+            {
+                option.LoginPath = "/Account/SignIn";
+                option.AccessDeniedPath = "/Home/Error";
+                option.ExpireTimeSpan = TimeSpan.FromDays(5);
+                option.LogoutPath = "/Account/SignIn";
+            });
+
+            builder.Services.AddAuthentication();
+            builder.Services.AddAuthentication("Identity.Apllication");
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "Identity.Apllication";
+                options.DefaultChallengeScheme = "Identity.Apllication";
+
+            });
+			//.AddCookie("Hamada", ".ASPNetCore.Hamada", option=>
+			//{
+			//option.LoginPath = "/Account/SignIn";
+			//option.AccessDeniedPath = "/Home/Error";
+			//option.ExpireTimeSpan = TimeSpan.FromDays(5);
+			//option.LogoutPath = "/Account/SignIn";
+
+			//});
+
+			///builder.Services.AddScoped<ApplicationDbContext>();
+			///builder.Services.AddScoped<DbContextOptions<ApplicationDbContext>>((ServiceProvider) =>
+			///{
+			///    var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+			///
+			///    optionsBuilder.UseSqlServer("");
+			///
+			///    var option=optionsBuilder.Options;
+			///
+			///    return option;
+			///});
+
+			#endregion
+
+			var app = builder.Build();
 
             #region Configure Kestrel Middlewares
 
@@ -94,7 +119,8 @@ namespace LinkDev.IKEA.PL
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",
