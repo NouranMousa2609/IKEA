@@ -85,9 +85,11 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 Gender = employee.Gender,
                 EmployeeType = employee.EmployeeType,
                 Department = employee.Department.Name?? "",
+                Image=employee.Image
+                   
 
 
-            }).ToListAsync();
+        }).ToListAsync();
             return employees;
         }
 
@@ -137,10 +139,11 @@ namespace LinkDev.IKEA.BLL.Services.Employees
                 LastModidiedBy = 1,
                 LastModidiedOn = DateTime.UtcNow,
                 DepartmentId = EmployeeDto.DepartmentId,
-
+                
             };
+            
 
-             _unitOfWork.EmployeeRepository.Update(employee);
+            _unitOfWork.EmployeeRepository.Update(employee);
             return await _unitOfWork.CompleteAsync();
         }
 
